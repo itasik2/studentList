@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students CRMs</title>
+    <link href="./css/normalize.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header d-flex">
+            <img src="./img/header-logo.svg" alt="логотип">
+            <form class="form" action="submit">
+                <input class="form__input" id="serch" type="search" name="search">
+            </form>
+        </div>
+        <div class="table-wrap">
+            <table class="table">
+                <thead>
+                    <th id="id" data-column="id">ID</th>
+                    <th id="fio" data-column="fio">Фамилия Имя Отчество<img src="./img/arrow-dawn.svg" alt> А-Я</th>
+                    <th id="add-time" data-column="add-time">Дата и время создания<img src="./img/arrow-dawn.svg" alt></th>
+                    <th id="last-updates" data-column="last-updates">Последние изменения<img src="./img/arrow-dawn.svg" alt></th>
+                    <th>Контакты</th>
+                    <th>Действия</th>
+                </thead>
+                <tbody id="students-table"></tbody>
+              </table>
+        </div>
+    </div>
+</body>
+
+</html>

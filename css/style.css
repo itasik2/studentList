@@ -1,0 +1,13 @@
+:root {
+    --green: #34c759;
+    --orange: #e6b127;
+    --red: #f06a4d;
+    --firm: #9873ff;
+    --grey: #c8c5d1;
+    --txt-grey: #b0b0b0;
+    --black: #333;
+}
+
+:root {
+    --font-family: "Open Sans", sans-serif;
+}
