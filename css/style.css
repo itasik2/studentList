@@ -1,4 +1,5 @@
 :root {
+    --white: #fff;
     --green: #34c759;
     --orange: #e6b127;
     --red: #f06a4d;
@@ -10,4 +11,20 @@
 
 :root {
     --font-family: "Open Sans", sans-serif;
+}
+
+body {
+    background-color: var(--txt-grey);
+}
+
+.table-wrap {
+    background-color: var(--grey);
+}
+
+.table-body {
+    display: table;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 300px;
+    background-color: var(--white);
 }
