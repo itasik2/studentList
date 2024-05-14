@@ -48,7 +48,7 @@ let serverDataClient = await serverGetClient();
 // массив клиентов
 let clientsArr = [];
 // если дата база не пуста то данные прел\даются в массив
-if (serverDataClient !== null) clientArr = serverDataClient;
+if (serverDataClient !== null) clientsArr = serverDataClient;
 
 const clientsTable = document.getElementById('clients-table'),
     clientsTableData = document.querySelectorAll('table, th')
@@ -96,6 +96,33 @@ function render() {
         clientTR.append(idTD, fioTD, createTimeTD, updateTimeTD, contactsTD);
         clientsTable.append(clientTR)
     }
-
-
 }
+
+document.getElementById('add-client').addEventListener('submit', async function (event) {
+    event.preventDefault();
+
+
+    const surname = document.getElementById('surname').value.trim();
+    const name = document.getElementById('name').value.trim();
+    const lastname = document.getElementById('lastName').value.trim();
+
+
+
+
+    let clientObj = {
+        surname: surname,
+        name: name,
+        lastName: lastname
+    }
+    let clientDataObj = await serverAddClient(clientObj);
+
+
+    clientsArr.push(clientDataObj);
+
+
+
+    //очищает форму перед отрисовкой
+    event.target.reset();
+    render()
+
+})
