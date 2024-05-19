@@ -1,79 +1,51 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students CRMs</title>
-    <link href="./css/normalize.css" rel="stylesheet" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/normalize.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./css/style.css" rel="stylesheet">
+    
   </head>
   <body>
     <div class="container d-flex flex-column position-relative">
       <div class="form-wrap position-absolute" id="form-wrap">
-        <form action="submit" class="form d-flex flex-column modal-form">
+        <form class="form d-flex flex-column modal-form">
           <div class="form-item">
-            <input
-              class="form-input"
-              type="text"
-              id="surname"
-              required
-              placeholder=""
-            />
+            <input class="form-input" id="surname" type="text" required placeholder>
             <label class="form-label" for="surname">Фамилия*</label>
           </div>
           <div class="form-item">
-            <input
-              class="form-input"
-              type="text"
-              id="name"
-              required
-              placeholder=""
-            />
+            <input class="form-input" id="name" type="text" required placeholder>
             <label class="form-label" for="name">Имя*</label>
           </div>
           <div class="form-item">
-            <input
-              class="form-input"
-              type="text"
-              id="lastName"
-              required
-              placeholder=""
-            />
+            <input class="form-input" id="lastName" type="text" required placeholder>
             <label class="form-label" for="lastName">Отчество</label>
           </div>
 
           <div class="d-flex">
-            <select class="form-select">
+            <select class="form-select" id="form-select">
               <option selected>Телефон</option>
               <option value="more-phone">Доп. телефон</option>
               <option value="email">Email</option>
               <option value="vk">Vk</option>
               <option value="facebook">Facebook</option>
             </select>
-            <input class="form-select-input" />
+            <input class="form-select-input" id="form-select-input">
           </div>
-          <button class="add-client" id="add-client" type="button">
+          <button class="add-client" id="add-client" type="submit" ">
             Добавить
           </button>
         </form>
       </div>
 
       <div class="header d-flex mb-4">
-        <img class="logo" src="./img/header-logo.svg" alt="логотип" />
+        <img class="logo" src="./img/header-logo.svg" alt="логотип">
         <form class="form d-flex align-items-center" action="submit">
-          <input
-            class="form__input h-100 p-2"
-            id="serch"
-            type="search"
-            name="search"
-            placeholder="Введите запрос"
-          />
+          <input class="form__input h-100 p-2" id="serch" type="search" name="search" placeholder="Введите запрос">
         </form>
       </div>
       <div class="table-wrap">
@@ -84,11 +56,11 @@
             <th class="text" id="fio" data-column="fio">
               Фамилия Имя Отчество
             </th>
-            <th class="text" id="create-time" data-column="createAT">
-              Дата и время<br />создания
+            <th class="text" id="createdAt" data-column="createdAt">
+              Дата и время<br>создания
             </th>
-            <th class="text" id="last-updates" data-column="updateAt">
-              Последние<br />изменения
+            <th class="text" id="updatedAt" data-column="updatedAt">
+              Последние<br>изменения
             </th>
             <th class="text" data-column="contacts">Контакты</th>
             <th class="text">Действия</th>
@@ -96,12 +68,13 @@
           <tbody class="table-body mb-3" id="clients-table"></tbody>
         </table>
         <div class="btn-wrap d-flex justify-content-center mb-5">
-          <button class="btn add-btn mb-5" type="submit" id="add-btn">
-            <img class="mx-2" src="./img/add-student.svg" alt="" />Добавить
+          <button class="btn add-btn mb-5" id="add-btn" type="submit">
+            <img class="mx-2" src="./img/add-student.svg" alt>Добавить
             клиента
           </button>
         </div>
       </div>
     </div>
+    <script src="./main.js" defer type="module"></script>
   </body>
 </html>
