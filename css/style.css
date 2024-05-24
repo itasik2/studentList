@@ -62,8 +62,10 @@ body {
     color: var(--txt-grey);
 }
 
+
 .form-input:focus~.form-label,
-.form-input:not(:focus):valid~.form-label {
+.form-input:not(:focus):valid~.form-label,
+.form-input:focus:invalid~.form-label {
     top: -10px;
     font-size: 10px;
 }
