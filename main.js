@@ -1,3 +1,17 @@
+// Получение элементов из DOM
+const clientsTable = document.getElementById('clients-table'),
+    formWrap = document.getElementById('form-wrap'),
+    addClientForm = document.getElementById('add-client'),
+    addBtn = document.getElementById('add-btn'),
+    saveBtn = document.getElementById('add-client-btn'),
+    formTitle = document.getElementById('modal-form-title'),
+    addContactBtn = document.getElementById('add-contact-btn'),
+    closeBtn = document.getElementById('close-btn'),
+    buttonContainer = document.getElementById('button-container');
+
+let initialFormState = {};
+
+
 const serverClientsUrl = 'http://localhost:3000/api/clients/';
 
 // Универсальная функция для выполнения запросов на сервер
@@ -26,6 +40,7 @@ async function serverGetClients() {
 
 // Функция для удаления клиента по ID
 async function serverDeleteClient(id) {
+
     return await serverRequest(id, 'DELETE');
 }
 
@@ -37,16 +52,23 @@ async function serverEditClient(id, obj) {
 // Инициализация массива клиентов
 let clientsArr = await serverGetClients();
 
-// Получение элементов из DOM
-const clientsTable = document.getElementById('clients-table');
-const formWrap = document.getElementById('form-wrap');
-const addForm = document.getElementById('add-client');
-const addBtn = document.getElementById('add-btn');
-const saveBtn = document.getElementById('add-client-btn');
-const formTitle = document.getElementById('modal-form-title');
-const addContactBtn = document.getElementById('add-contact-btn');
 
-let initialFormState = {};
+// Функция создания кнопки
+function getBtn(text, className, id) {
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    btn.classList.add(className);
+    btn.id = id;
+    return btn;
+}
+
+// кнопка "Отмена"
+const cancelBtn = getBtn('Отмена', 'cancelBtn', 'cancelBtn');
+cancelBtn.addEventListener('click', () => {
+    formWrap.classList.add('d-none');
+    addClientForm.reset();
+    document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов при отмене
+});
 
 // Функция для получения ФИО клиента
 function getFio(surname, name, lastname) {
@@ -101,16 +123,16 @@ function fillForm(client) {
 
 // Функция для получения текущего состояния формы
 function getFormState() {
-    const surname = document.getElementById('surname').value.trim();
-    const name = document.getElementById('name').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-    const contactInputs = document.querySelectorAll('.contact-input');
-    const contacts = Array.from(contactInputs).map(input => {
-        return {
-            type: input.querySelector('select').value,
-            value: input.querySelector('input').value.trim()
-        };
-    });
+    const surname = document.getElementById('surname').value.trim(),
+        name = document.getElementById('name').value.trim(),
+        lastName = document.getElementById('lastName').value.trim(),
+        contactInputs = document.querySelectorAll('.contact-input'),
+        contacts = Array.from(contactInputs).map(input => {
+            return {
+                type: input.querySelector('select').value,
+                value: input.querySelector('input').value.trim()
+            };
+        });
     return {
         surname,
         name,
@@ -125,6 +147,16 @@ function isFormChanged() {
     return JSON.stringify(currentFormState) !== JSON.stringify(initialFormState);
 }
 
+// Функция для удаления клиента
+async function deleteClient(clientId) {
+    await serverDeleteClient(clientId);
+    clientsArr = clientsArr.filter(c => c.id !== clientId); // Удаление клиента из массива
+    render();
+    formWrap.classList.add('d-none');
+    addClientForm.reset();
+    document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов после удаления клиента
+}
+
 // Функция для отображения списка клиентов в таблице
 function render() {
     clientsTable.innerHTML = '';
@@ -136,31 +168,38 @@ function render() {
             <td>${client.createdAt}</td>
             <td>${client.updatedAt}</td>
             <td>${getContacts(client.contacts)}</td>
-            <td>
-                <button class="editBtn" data-id="${client.id}">Изменить</button>
-                <button class="deleteBtn" data-id="${client.id}">Удалить</button>
-            </td>
         `;
 
-        // Добавление обработчика события для кнопки удаления клиента
-        const deleteBtn = clientTR.querySelector('.deleteBtn');
-        deleteBtn.addEventListener('click', async () => {
-            await serverDeleteClient(client.id);
-            clientsArr = clientsArr.filter(c => c.id !== client.id);
-            render();
-        });
-
-        // Добавление обработчика события для кнопки редактирования клиента
-        const editBtn = clientTR.querySelector('.editBtn');
+        // Создание кнопки "Изменить" и добавление обработчика события
+        const editBtn = getBtn('Изменить', 'editBtn', `edit-${client.id}`);
         editBtn.addEventListener('click', () => {
             fillForm(client);
             formWrap.classList.remove('d-none');
-            formTitle.innerHTML = `
-            Изменить данные <span class="span-id"> ID: ${client.id}</span>`
+            formTitle.innerHTML = `Изменить данные <span class="span-id"> ID: ${client.id}</span>`;
             addBtn.dataset.editId = client.id;
+
+            // Добавление кнопки "Удалить клиента" в форму редактирования
+            buttonContainer.innerHTML = '';
+            const deleteClientBtn = getBtn('Удалить клиента', 'delete-client-btn', `delete-client-${client.id}`);
+            deleteClientBtn.addEventListener('click', () => {
+                deleteClient(client.id);
+            });
+            buttonContainer.appendChild(deleteClientBtn);
         });
 
-        clientsTable.append(clientTR);
+        // Создание кнопки "Удалить" в таблице и добавление обработчика события
+        const deleteBtn = getBtn('Удалить', 'deleteBtn', `delete-${client.id}`);
+        deleteBtn.addEventListener('click', () => {
+            deleteClient(client.id);
+        });
+
+        // Добавление кнопок в строку таблицы
+        const btnTd = document.createElement('td');
+        btnTd.appendChild(editBtn);
+        btnTd.appendChild(deleteBtn);
+        clientTR.appendChild(btnTd);
+
+        clientsTable.appendChild(clientTR);
     });
 }
 
@@ -173,29 +212,28 @@ addContactBtn.addEventListener('click', (event) => {
 });
 
 // Обработка изменения полей формы
-addForm.addEventListener('input', () => {
+addClientForm.addEventListener('input', () => {
     saveBtn.disabled = !isFormChanged(); // Проверка изменений формы
 });
 
 // Обработка отправки формы для добавления/редактирования клиента
-addForm.addEventListener('submit', async (event) => {
+addClientForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const surname = document.getElementById('surname').value.trim();
-    const name = document.getElementById('name').value.trim();
-    const lastName = document.getElementById('lastName').value.trim();
-
-    const contactInputs = document.querySelectorAll('.contact-input');
-    const contacts = Array.from(contactInputs).map(input => {
-        const type = input.querySelector('select').value;
-        const value = input.querySelector('input').value.trim();
-        if (value) { // Только добавляем контакт, если есть значение
-            return {
-                type,
-                value
-            };
-        }
-    }).filter(contact => contact !== undefined); // Убираем undefined элементы
+    const surname = document.getElementById('surname').value.trim(),
+        name = document.getElementById('name').value.trim(),
+        lastName = document.getElementById('lastName').value.trim(),
+        contactInputs = document.querySelectorAll('.contact-input'),
+        contacts = Array.from(contactInputs).map(input => {
+            const type = input.querySelector('select').value,
+                value = input.querySelector('input').value.trim();
+            if (value) { // Только добавляем контакт, если есть значение
+                return {
+                    type,
+                    value
+                };
+            }
+        }).filter(contact => contact !== undefined); // Убираем undefined элементы
 
     const clientObj = {
         surname,
@@ -206,9 +244,9 @@ addForm.addEventListener('submit', async (event) => {
 
     // Если форма используется для редактирования клиента
     if (addBtn.dataset.editId) {
-        const clientId = addBtn.dataset.editId;
-        const clientDataObj = await serverEditClient(clientId, clientObj);
-        const index = clientsArr.findIndex(c => c.id === clientId);
+        const clientId = addBtn.dataset.editId,
+            clientDataObj = await serverEditClient(clientId, clientObj),
+            index = clientsArr.findIndex(c => c.id === clientId);
         clientsArr[index] = clientDataObj;
     } else {
         // Если форма используется для добавления нового клиента
@@ -221,6 +259,8 @@ addForm.addEventListener('submit', async (event) => {
     document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов после сохранения
 });
 
+
+
 // Открытие формы для добавления нового клиента
 addBtn.addEventListener('click', () => {
     formWrap.classList.remove('d-none');
@@ -229,6 +269,18 @@ addBtn.addEventListener('click', () => {
     document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов при добавлении нового клиента
     initialFormState = getFormState(); // Установка начального состояния формы
     saveBtn.disabled = true; // Деактивация кнопки сохранения
+
+    // Добавление кнопки "Отмена"
+    buttonContainer.innerHTML = '';
+
+    buttonContainer.appendChild(cancelBtn);
+});
+
+// Добавление обработчика на кнопку закрытия формы
+closeBtn.addEventListener('click', () => {
+    formWrap.classList.add('d-none');
+    addClientForm.reset();
+    document.getElementById('contacts-container').innerHTML = '';
 });
 
 // Первоначальное отображение списка клиентов

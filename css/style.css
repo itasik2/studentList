@@ -110,6 +110,11 @@ body {
     color: var(--black);
 }
 
+.close-btn {
+    border: none;
+    background-color: var(--white);
+}
+
 .container-dark-fone {
     background: rgba(51, 51, 51, 0.6);
 

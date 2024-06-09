@@ -1,17 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students CRM</title>
-    <link href="./css/normalize.css" rel="stylesheet" />
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    />
-    <link href="./css/style.css" rel="stylesheet" />
+    <link href="./css/normalize.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./css/style.css" rel="stylesheet">
   </head>
   <body>
     <!DOCTYPE html>
@@ -27,8 +22,15 @@
 <body>
   <div class="container d-flex flex-column position-relative" id="container">
     <div class="form-wrap position-absolute d-none" id="form-wrap">
-      <p class="modal-form-title" id="modal-form-title"></p>
-      <form class="form d-flex flex-column modal-form" id="add-client">
+      <div class="d-flex justify-content-between">
+        <p class="modal-form-title" id="modal-form-title"></p>
+      <button class="close-btn" id="close-btn">
+        <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2332 7.73333L21.2665 6.76666L14.4998 13.5334L7.73318 6.7667L6.76652 7.73336L13.5332 14.5L6.76654 21.2667L7.73321 22.2333L14.4998 15.4667L21.2665 22.2334L22.2332 21.2667L15.4665 14.5L22.2332 7.73333Z" fill="#B0B0B0"></path>
+        </svg>
+      </button>
+      </div>
+      <form class="form d-flex flex-column modal-form" id="add-client" action="submit">
         <div class="form-item">
           <input class="form-input" id="surname" type="text" required>
           <label class="form-label" for="surname">Фамилия*</label>
@@ -41,7 +43,9 @@
           <input class="form-input" id="lastName" type="text" required>
           <label class="form-label" for="lastName">Отчество</label>
         </div>
+      
         <div id="contacts-container"></div>
+        
         <button class="add-contact" id="add-contact-btn" type="button">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clip-path="url(#clip0_224_3502)">
@@ -55,8 +59,10 @@
           </svg>
           Добавить контакт
         </button>
-        <button class="add-client" id="add-client-btn" type="submit">Сохранить</button>
+        <button class="add-client btn-primary" id="add-client-btn">Сохранить</button>
+
       </form>
+      <div class="button-container" id="button-container"></div>
     </div>
     <div class="header d-flex mb-4">
       <img class="logo" src="./img/header-logo.svg" alt="логотип">
@@ -90,5 +96,5 @@
 
   </body>
     </html>
-  </body>
-</html>
+  
+
