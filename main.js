@@ -157,6 +157,13 @@ async function deleteClient(clientId) {
     document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов после удаления клиента
 }
 
+// Функция окна для подтверждения удаления
+function confirmDeleteClient() {
+    addClientForm.classList.add('d-none');
+    formTitle.innerHTML = 'Удалить клиента';
+
+}
+
 // Функция для отображения списка клиентов в таблице
 function render() {
     clientsTable.innerHTML = '';
@@ -182,7 +189,8 @@ function render() {
             buttonContainer.innerHTML = '';
             const deleteClientBtn = getBtn('Удалить клиента', 'delete-client-btn', `delete-client-${client.id}`);
             deleteClientBtn.addEventListener('click', () => {
-                deleteClient(client.id);
+
+                // deleteClient(client.id);
             });
             buttonContainer.appendChild(deleteClientBtn);
         });
@@ -190,6 +198,7 @@ function render() {
         // Создание кнопки "Удалить" в таблице и добавление обработчика события
         const deleteBtn = getBtn('Удалить', 'deleteBtn', `delete-${client.id}`);
         deleteBtn.addEventListener('click', () => {
+
             deleteClient(client.id);
         });
 
