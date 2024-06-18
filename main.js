@@ -7,7 +7,8 @@ const clientsTable = document.getElementById('clients-table'),
     formTitle = document.getElementById('modal-form-title'),
     addContactBtn = document.getElementById('add-contact-btn'),
     closeBtn = document.getElementById('close-btn'),
-    buttonContainer = document.getElementById('button-container');
+    buttonContainer = document.getElementById('button-container'),
+    modalConfirmDelete = document.getElementById('modal-confirm-delete');
 
 let initialFormState = {};
 
@@ -62,13 +63,16 @@ function getBtn(text, className, id) {
     return btn;
 }
 
-// кнопка "Отмена"
-const cancelBtn = getBtn('Отмена', 'cancelBtn', 'cancelBtn');
-cancelBtn.addEventListener('click', () => {
+function handleCancel() {
     formWrap.classList.add('d-none');
     addClientForm.reset();
-    document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов при отмене
-});
+    document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов
+}
+
+
+// кнопка "Отмена"
+const cancelBtn = getBtn('Отмена', 'cancelBtn', 'cancelBtn');
+cancelBtn.addEventListener('click', handleCancel);
 
 // Функция для получения ФИО клиента
 function getFio(surname, name, lastname) {
@@ -90,7 +94,7 @@ function createContactInput(contact = {
     contactDiv.innerHTML = `
         <select>
             <option value="Телефон" ${contact.type === 'Телефон' ? 'selected' : ''}>Телефон</option>
-            <option value="Доп. телефон" ${contact.type === 'Доп. телефон' ? 'selected' : ''}>Доп. телефон</option>
+            <option value="Доп.телефон" ${contact.type === 'Доп. телефон' ? 'selected' : ''}>Доп.телефон</option>
             <option value="Email" ${contact.type === 'Email' ? 'selected' : ''}>Email</option>
             <option value="Vk" ${contact.type === 'Vk' ? 'selected' : ''}>Vk</option>
             <option value="Facebook" ${contact.type === 'Facebook' ? 'selected' : ''}>Facebook</option>
@@ -112,6 +116,7 @@ function fillForm(client) {
     // Добавление существующих контактов в форму
     if (client.contacts && client.contacts.length > 0) {
         client.contacts.forEach(contact => {
+
             contactsContainer.appendChild(createContactInput(contact));
         });
     }
@@ -158,10 +163,25 @@ async function deleteClient(clientId) {
 }
 
 // Функция окна для подтверждения удаления
-function confirmDeleteClient() {
-    addClientForm.classList.add('d-none');
-    formTitle.innerHTML = 'Удалить клиента';
-
+function confirmDeleteClient(clientId) {
+    modalConfirmDelete.innerHTML = `<div class="modal-confirm-delete-header d-flex justify-content-between">
+        <h3 class="modal-confirm-delete-title" id="modal-confirm-delete-title">Удалить клиента</h3>
+        <button class="close-btn mr-auto" id="modal-close-btn">
+          <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2332 7.73333L21.2665 6.76666L14.4998 13.5334L7.73318 6.7667L6.76652 7.73336L13.5332 14.5L6.76654 21.2667L7.73321 22.2333L14.4998 15.4667L21.2665 22.2334L22.2332 21.2667L15.4665 14.5L22.2332 7.73333Z" fill="#B0B0B0"></path>
+          </svg>
+        </button>
+      </div>
+      <p class="modal-confirm-delete-desc d-">
+        Вы действительно хотите удалить данного клиента?
+      </p>
+      <div class="modal-confirm-btn-wrap d-flex flex-column">
+        <button class="confirm-delete-btn btn-primary btn" id="confirm-delete-btn">Удалить</button>
+        <button class="confirm-cancel-btn btn-none btn" id="confirm-cancel-btn">Отмена</button>
+      </div>`
+    document.getElementById('confirm-delete-btn').addEventListener('click', () => deleteClient(clientId));
+    document.getElementById('confirm-cancel-btn').addEventListener('click', () => modalConfirmDelete.innerHTML = '');
+    document.getElementById('modal-close-btn').addEventListener('click', () => modalConfirmDelete.innerHTML = '')
 }
 
 // Функция для отображения списка клиентов в таблице
@@ -189,18 +209,16 @@ function render() {
             buttonContainer.innerHTML = '';
             const deleteClientBtn = getBtn('Удалить клиента', 'delete-client-btn', `delete-client-${client.id}`);
             deleteClientBtn.addEventListener('click', () => {
-
-                // deleteClient(client.id);
+                confirmDeleteClient(client.id);
+                formWrap.classList.add('d-none');
             });
+
             buttonContainer.appendChild(deleteClientBtn);
         });
 
         // Создание кнопки "Удалить" в таблице и добавление обработчика события
         const deleteBtn = getBtn('Удалить', 'deleteBtn', `delete-${client.id}`);
-        deleteBtn.addEventListener('click', () => {
-
-            deleteClient(client.id);
-        });
+        deleteBtn.addEventListener('click', () => confirmDeleteClient(client.id));
 
         // Добавление кнопок в строку таблицы
         const btnTd = document.createElement('td');
