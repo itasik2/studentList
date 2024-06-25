@@ -98,32 +98,75 @@ function getImage(src, alt = '', className = '') {
     return img;
 }
 
-// Заменяет тип контактов на иконки
+
+
 function getContacts(contacts) {
-    return contacts.map(contact => {
-        let img;
-        switch (contact.type) {
-            case 'Телефон':
-                img = getImage('img/phone-icon.svg', 'Телефон', 'contact-icon');
-                break;
-            case 'Доп.телефон':
-                img = getImage('img/phone-alt-icon.svg', 'Доп.телефон', 'contact-icon');
-                break;
-            case 'Email':
-                img = getImage('img/email-icon.svg', 'Email', 'contact-icon');
-                break;
-            case 'Vk':
-                img = getImage('img/vk-icon.svg', 'Vk', 'contact-icon');
-                break;
-            case 'Facebook':
-                img = getImage('img/facebook-icon.svg', 'Facebook', 'contact-icon');
-                break;
-            default:
-                img = getImage('img/contact-icon.svg', 'Контакт', 'contact-icon');
-        }
-        return `<span>${img.outerHTML} <div class="contact-value d-none">${contact.value}</div></span>`;
-    }).join(' ');
+    const visibleContacts = contacts.slice(0, 5).map(contact => createContactIcon(contact)).join(' ');
+    const hiddenContactsCount = contacts.length - 5;
+
+    const hiddenButton = hiddenContactsCount > 0 ? `
+        <button class="hidden-contacts-btn">
+            +${hiddenContactsCount}
+        </button>` : '';
+
+    const contactsHTML = `
+        <div class="contacts-wrapper d-flex justify-content-center">
+            <div class="visible-contacts">${visibleContacts}</div>
+            <div class="hidden-contacts d-none">${contacts.slice(5).map(contact => createContactIcon(contact)).join(' ')}</div>
+            ${hiddenButton}
+        </div>`;
+
+    const container = document.createElement('div');
+    container.innerHTML = contactsHTML;
+
+    return container.innerHTML;
 }
+
+// Функция создания иконки контакта
+function createContactIcon(contact) {
+    let img;
+
+    switch (contact.type) {
+        case 'Телефон':
+            img = getImage('img/phone-icon.svg', 'Телефон', 'contact-icon');
+            break;
+        case 'Доп.телефон':
+            img = getImage('img/phone-alt-icon.svg', 'Доп.телефон', 'contact-icon');
+            break;
+        case 'Email':
+            img = getImage('img/email-icon.svg', 'Email', 'contact-icon');
+            break;
+        case 'Vk':
+            img = getImage('img/vk-icon.svg', 'Vk', 'contact-icon');
+            break;
+        case 'Facebook':
+            img = getImage('img/facebook-icon.svg', 'Facebook', 'contact-icon');
+            break;
+        default:
+            img = getImage('img/contact-icon.svg', 'Контакт', 'contact-icon');
+    }
+
+    return `<span>${img.outerHTML} <div class="contact-value d-none">${contact.value}</div></span>`;
+}
+
+// Функция для отображения скрытых контактов
+function showHiddenContacts(button) {
+    const contactsWrapper = button.closest('.contacts-wrapper');
+    const hiddenContacts = contactsWrapper.querySelector('.hidden-contacts');
+    hiddenContacts.classList.remove('d-none');
+    hiddenContacts.classList.add('d-block');
+    button.classList.add('d-none');
+    contactsWrapper.classList.add('flex-column');
+    contactsWrapper.classList.add('align-items-start')
+
+}
+
+// Делегирование событий на таблицу клиентов
+clientsTable.addEventListener('click', (event) => {
+    if (event.target.classList.contains('hidden-contacts-btn')) {
+        showHiddenContacts(event.target);
+    }
+});
 
 // Функция для создания элемента ввода контакта
 function createContactInput(contact = {
@@ -147,18 +190,25 @@ function createContactInput(contact = {
 
 // Функция для заполнения формы данными клиента
 function fillForm(client) {
+    // Заполнение основных полей формы
     document.getElementById('surname').value = client.surname;
     document.getElementById('name').value = client.name;
     document.getElementById('lastName').value = client.lastName || '';
 
+    // Очистка предыдущих контактов
     const contactsContainer = document.getElementById('contacts-container');
-    contactsContainer.innerHTML = ''; // Очистка предыдущих контактов
+    contactsContainer.innerHTML = '';
 
     // Добавление существующих контактов в форму
     if (client.contacts && client.contacts.length > 0) {
         client.contacts.forEach(contact => {
             contactsContainer.appendChild(createContactInput(contact));
         });
+
+        // Проверка на максимальное количество контактов
+        if (client.contacts.length === 10) {
+            console.log('Достигнуто максимальное количество контактов!');
+        }
     }
 
     // Сохранение начального состояния формы
@@ -195,16 +245,15 @@ function isFormChanged() {
 // Функция для удаления клиента
 async function deleteClient(clientId) {
     await serverDeleteClient(clientId);
-    clientsArr = clientsArr.filter(c => c.id !== clientId); // Удаление клиента из массива
+    clientsArr = clientsArr.filter(client => client.id !== clientId);
     render();
-    formWrap.classList.add('d-none');
-    addClientForm.reset();
-    document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов после удаления клиента
+    modalConfirmDelete.innerHTML = '';
 }
 
-// Функция окна для подтверждения удаления
+// Функция для подтверждения удаления клиента
 function confirmDeleteClient(clientId) {
-    modalConfirmDelete.innerHTML = `<div class="modal-confirm-delete-header d-flex justify-content-between">
+    modalConfirmDelete.innerHTML = `
+      <div class="modal-confirm-delete-header d-flex align-items-center">
         <h3 class="modal-confirm-delete-title" id="modal-confirm-delete-title">Удалить клиента</h3>
         <button class="close-btn mr-auto" id="modal-close-btn">
         ${getImage('./img/close.svg', 'Закрыть', 'close-img').outerHTML}
@@ -229,15 +278,15 @@ function render() {
         const clientTR = document.createElement('tr');
 
         clientTR.innerHTML = `
-            <td>${client.id}</td>
-            <td>${getFio(client.surname, client.name, client.lastName)}</td>
-            <td>${formatDateTime(client.createdAt)}</td>
-            <td>${formatDateTime(client.updatedAt)}</td>
-            <td>${getContacts(client.contacts)}</td>
+            <td class="client-id" id="client-id">${client.id}</td>
+            <td class="client-fio" id="client-fio">${getFio(client.surname, client.name, client.lastName)}</td>
+            <td class="client-create-time" id="client-create-time">${formatDateTime(client.createdAt)}</td>
+            <td class="client-update-time" id="client-update-time">${formatDateTime(client.updatedAt)}</td>
+            <td class="client-contacts" id="client-contacts">${getContacts(client.contacts)}</td>
         `;
 
         // Создание кнопки "Изменить" и добавление обработчика события
-        const editBtn = getBtn(`${getImage('./img/edit.svg', 'Изменит', 'edit-img').outerHTML} Изменить`, 'editBtn', `edit-${client.id}`);
+        const editBtn = getBtn(`${getImage('./img/edit.svg', 'Изменить', 'edit-img').outerHTML} Изменить`, 'editBtn', `edit-${client.id}`);
         editBtn.addEventListener('click', () => {
             fillForm(client);
             formWrap.classList.remove('d-none');
@@ -269,12 +318,21 @@ function render() {
     });
 }
 
+// Первоначальное отображение списка клиентов
+render();
+
 // Добавление нового поля контакта при нажатии на кнопку "Добавить контакт"
 addContactBtn.addEventListener('click', (event) => {
     event.preventDefault();
     const contactsContainer = document.getElementById('contacts-container');
-    contactsContainer.appendChild(createContactInput());
-    saveBtn.disabled = !isFormChanged(); // Проверка изменений формы
+    const contactCount = contactsContainer.querySelectorAll('.contact-input').length;
+
+    if (contactCount < 10) {
+        contactsContainer.appendChild(createContactInput());
+        saveBtn.disabled = !isFormChanged(); // Проверка изменений формы
+    } else {
+        console.log('Достигнуто максимальное количество контактов!');
+    }
 });
 
 // Обработка изменения полей формы

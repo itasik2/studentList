@@ -132,3 +132,31 @@ body {
     padding: 12px 26px;
 
 }
+
+.hidden-contacts-btn {
+    display: flex;
+    background-color: var(--white);
+    border: 2px solid var(--firm);
+    border-radius: 50%;
+    color: var(--black);
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    font-size: 10px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.hidden-contacts {
+    display: none;
+}
+
+.hidden-contacts-btn.active {
+    background-color: #0056b3;
+}
+
+.contacts-wrapper {
+    display: flex;
+    align-items: center;
+}
