@@ -125,33 +125,28 @@ function getContacts(contacts) {
 // Функция создания иконки контакта
 function createContactIcon(contact) {
     let img;
-    let tooltip = contact
+    let tooltip = `${contact.type}: ${contact.value}`;
     switch (contact.type) {
         case 'Телефон':
             img = getImage('img/phone-icon.svg', 'Телефон', 'contact-icon');
-            tooltip;
             break;
         case 'Доп.телефон':
             img = getImage('img/phone-alt-icon.svg', 'Доп.телефон', 'contact-icon');
-            tooltip;
             break;
         case 'Email':
             img = getImage('img/email-icon.svg', 'Email', 'contact-icon');
-            tooltip;
             break;
         case 'Vk':
             img = getImage('img/vk-icon.svg', 'Vk', 'contact-icon');
-            tooltip;
             break;
         case 'Facebook':
             img = getImage('img/facebook-icon.svg', 'Facebook', 'contact-icon');
-            tooltip;
             break;
         default:
             img = getImage('img/contact-icon.svg', 'Контакт', 'contact-icon');
     }
 
-    return `<span class="position-relative">${img.outerHTML} <div class="contact-value">${contact.type}: ${contact.value}</div></span>`;
+    return `<span data-tippy-content="${tooltip}">${img.outerHTML}</span>`;
 }
 
 // Функция для отображения скрытых контактов
@@ -321,6 +316,8 @@ function render() {
 
         clientsTable.appendChild(clientTR);
     });
+
+    tippy('[data-tippy-content]');
 }
 
 // Первоначальное отображение списка клиентов

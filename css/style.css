@@ -160,3 +160,13 @@ body {
     display: flex;
     align-items: center;
 }
+
+
+
+.contact-icon {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    fill: #9873FF;
+    opacity: 0.7;
+}
