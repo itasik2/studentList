@@ -92,7 +92,7 @@ body {
     margin-right: 50px;
 }
 
-.form__input {
+.form-search__input {
     max-height: 44px;
     min-width: 581px;
     border: 1px solid rgba(51, 51, 51, 0.2);
@@ -169,4 +169,10 @@ body {
     height: 16px;
     fill: #9873FF;
     opacity: 0.7;
+}
+
+.cancelBtn {
+    border: none;
+    border-bottom: 1px solid black;
+    padding-bottom: 1px;
 }
