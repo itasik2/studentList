@@ -1,178 +1,214 @@
 :root {
-    --white: #fff;
-    --green: #34c759;
-    --orange: #e6b127;
-    --red: #f06a4d;
-    --firm: #9873ff;
-    --grey: #c8c5d1;
-    --txt-grey: #b0b0b0;
-    --black: #333;
+  --white: #fff;
+  --green: #34c759;
+  --orange: #e6b127;
+  --red: #f06a4d;
+  --firm: #9873ff;
+  --grey: #c8c5d1;
+  --txt-grey: #b0b0b0;
+  --black: #333;
 }
 
 :root {
-    --font-family: "Open Sans", sans-serif;
+  --font-family: "Open Sans", sans-serif;
 }
 
 body {
-    box-sizing: border-box;
-    background-color: var(--grey);
+  box-sizing: border-box;
+  background-color: var(--grey);
 }
 
 .text {
-    font-family: var(--font-family);
-    font-size: 12px;
-    color: var(--txt-grey);
+  font-family: var(--font-family);
+  font-size: 12px;
+  color: var(--txt-grey);
 }
 
 .container {
-    margin: 50px auto;
-    padding-left: 20px;
-    padding-right: 20px;
-    background: var(--white);
-    max-width: 1024px;
+  margin: 50px auto;
+  padding-left: 20px;
+  padding-right: 20px;
+  background: var(--white);
+  max-width: 1024px;
 }
 
 
 .form-wrap {
-    background: var(--white);
+  background: var(--white);
 }
 
 .form-item {
-    display: inline-block;
-    vertical-align: top;
-    position: relative;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
 }
 
 .form-input {
-    width: 100%;
-    height: 40px;
-    padding: 5px 15px;
+  width: 100%;
+  height: 40px;
+  padding: 5px 15px;
 }
 
 .form-label {
-    position: absolute;
-    pointer-events: none;
-    left: 15px;
-    right: 15px;
-    top: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    line-height: 40px;
-    transition: .3s;
-    color: var(--txt-grey);
+  position: absolute;
+  pointer-events: none;
+  left: 15px;
+  right: 15px;
+  top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  line-height: 40px;
+  transition: .3s;
+  color: var(--txt-grey);
 }
 
 
 .form-input:focus~.form-label,
 .form-input:not(:focus):valid~.form-label,
 .form-input:focus:invalid~.form-label {
-    top: -10px;
-    font-size: 10px;
+  top: -10px;
+  font-size: 10px;
 }
 
 .form-select {
-    outline: none;
-    border: none;
-    border-radius: 0;
-    background-color: var(--grey);
-    background-image: url(../img/select-arrow-down.svg);
+  border: 1px solid var(--grey);
+  width: 123px;
+  height: 37px;
+  background-color: #e7e5eb;
+  background-image: url(../img/select-arrow-down.svg);
+}
+
+.form-select:active {
+  background-image: url(../img/select-arrow-up.svg);
 }
 
 .form-select>option {
-    background-color: #fff;
+  background-color: #fff;
 }
 
 
 .header {
-    padding-top: 20px;
-    padding-bottom: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .logo {
-    margin-right: 50px;
+  margin-right: 50px;
 }
 
 .form-search__input {
-    max-height: 44px;
-    min-width: 581px;
-    border: 1px solid rgba(51, 51, 51, 0.2);
-    background-color: inherit;
+  max-height: 44px;
+  min-width: 581px;
+  border: 1px solid rgba(51, 51, 51, 0.2);
+  background-color: inherit;
 }
 
 .table-body {
-    height: 300px;
+  height: 300px;
 }
 
 .h1-title {
-    font-family: var(--font-family);
-    font-weight: 700;
-    font-size: 24px;
-    color: var(--black);
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 24px;
+  color: var(--black);
 }
 
 .close-btn {
-    border: none;
-    background-color: var(--white);
+  border: none;
+  background-color: var(--white);
 }
 
 .container-dark-fone {
-    background: rgba(51, 51, 51, 0.6);
+  background: rgba(51, 51, 51, 0.6);
 
 }
 
+.editBtn,
+.deleteBtn {
+  border: none;
+  background-color: var(--white);
+  font-weight: 400;
+  font-size: 14px;
+}
 
 .add-btn {
-    font-family: var(--font-family);
-    font-weight: 600;
-    font-size: 14px;
-    text-align: center;
-    color: var(--firm);
-    border: 1px solid var(--firm);
-    border-radius: 0px;
-    padding: 12px 26px;
+  font-family: var(--font-family);
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  color: var(--firm);
+  border: 1px solid var(--firm);
+  border-radius: 0px;
+  padding: 12px 26px;
+
+}
+
+.cancelBtn,
+.delete-client-btn {
+  border: none;
+  background-color: var(--white);
+  font-size: 12px;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
 
 }
 
 .hidden-contacts-btn {
-    display: flex;
-    background-color: var(--white);
-    border: 2px solid var(--firm);
-    border-radius: 50%;
-    color: var(--black);
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
-    cursor: pointer;
-    margin-left: 5px;
+  display: flex;
+  background-color: var(--white);
+  border: 2px solid var(--firm);
+  border-radius: 50%;
+  color: var(--black);
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  cursor: pointer;
+  margin-left: 5px;
 }
 
 .hidden-contacts {
-    display: none;
+  display: none;
 }
 
 .hidden-contacts-btn.active {
-    background-color: #0056b3;
+  background-color: #0056b3;
 }
 
 .contacts-wrapper {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 
 
 .contact-icon {
-    cursor: pointer;
-    width: 16px;
-    height: 16px;
-    fill: #9873FF;
-    opacity: 0.7;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+  fill: #9873FF;
+  opacity: 0.7;
 }
 
-.cancelBtn {
-    border: none;
-    border-bottom: 1px solid black;
-    padding-bottom: 1px;
+.tippy-box {
+  background-color: var(--black);
+  border-radius: 0;
+}
+
+.tooltip-content {
+  font-family: var(--font-family);
+  font-weight: 400;
+  font-size: 12px;
+  color: #fff;
+
+}
+
+.tooltip-content a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #b89eff;
+
 }
