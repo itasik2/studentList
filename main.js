@@ -9,7 +9,8 @@ const clientsTable = document.getElementById('clients-table'),
   closeBtn = document.getElementById('close-btn'),
   buttonContainer = document.getElementById('button-container'),
   modalConfirmDelete = document.getElementById('modal-confirm-delete'),
-  clientsTableData = document.querySelectorAll('table th')
+  clientsTableData = document.querySelectorAll('table th'),
+  contactsContainer = document.getElementById('contacts-container')
 
 let initialFormState = {};
 
@@ -69,7 +70,7 @@ const cancelBtn = getBtn('Отмена', 'cancelBtn', 'cancelBtn');
 cancelBtn.addEventListener('click', () => {
   formWrap.classList.add('d-none');
   addClientForm.reset();
-  document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов
+  contactsContainer.innerHTML = ''; // Очистка полей контактов
 });
 
 // Функция для получения ФИО клиента
@@ -88,7 +89,7 @@ function formatDateTime(date) {
   const minutes = String(date.getMinutes()).padStart(2, '0');
 
   // Возвращаем отформатированную строку
-  return `${day}.${month}.${year} <span class="time">${hours}:${minutes}</span>`;
+  return `${day}.${month}.${year} <span class="time light-text">${hours}:${minutes}</span>`;
 }
 
 // Функция добавления изображения
@@ -172,26 +173,66 @@ clientsTable.addEventListener('click', (event) => {
     showHiddenContacts(event.target);
   }
 });
+// кнопка очистки
+const clearBtn = getBtn(`${getImage('./img/close.svg', '', 'clear-btn-icon').outerHTML}`, 'clear-btn', 'clear-btn');
 
-// Функция для создания элемента ввода контакта
+// Созаёт поле ввода контакта
 function createContactInput(contact = {
   type: 'Телефон',
   value: ''
 }) {
   const contactDiv = document.createElement('div');
   contactDiv.classList.add('contact-input', 'd-flex');
+  // селект с типом контакта
+  const selectHTML = `
+    <select class="form-select d-flex contact-type">
+      <option value="Телефон" ${contact.type === 'Телефон' ? 'selected' : ''}>Телефон</option>
+      <option value="Email" ${contact.type === 'Email' ? 'selected' : ''}>Email</option>
+      <option value="Vk" ${contact.type === 'Vk' ? 'selected' : ''}>Vk</option>
+      <option value="Facebook" ${contact.type === 'Facebook' ? 'selected' : ''}>Facebook</option>
+      <option value="Другое" ${contact.type === 'Другое' ? 'selected' : ''}>Другое</option>
+    </select>
+  `;
+  // значение контакта и кнопка очистки
+  const valueInputHTML = `
+    <div class="value-input-wrapper d-flex">
+      <input type="text" class="contact-value" value="${contact.value}" placeholder="Введите значение">
+      <button type="button" class="clear-btn d-none">${getImage('./img/clear-icon.svg', '', 'clear-btn-icon').outerHTML}</button>
+    </div>
+  `;
+
   contactDiv.innerHTML = `
-        <select class="form-select d-flex">
-            <option value="Телефон" ${contact.type === 'Телефон'} selected>Телефон</option>
-            <option value="Email" ${contact.type === 'Email'}>Email</option>
-            <option value="Vk" ${contact.type === 'Vk'}>Vk</option>
-            <option value="Facebook" ${contact.type === 'Facebook'}>Facebook</option>
-            <option value="Другое" ${contact.type === 'Другое'}>Другое</option>
-        </select>
-        <input type="text" value="${contact.value}" placeholder="Введите значение">
-    `;
+    ${selectHTML}
+    ${valueInputHTML}
+  `;
+
+  const valueInput = contactDiv.querySelector('.contact-value');
+  const clearBtn = contactDiv.querySelector('.clear-btn');
+
+  // Обработчик ввода значения в поле контакта
+  valueInput.addEventListener('input', () => {
+    if (valueInput.value.trim() !== '') {
+      clearBtn.classList.remove('d-none');
+    } else {
+      clearBtn.classList.add('d-none');
+    }
+  });
+
+  // Обработчик нажатия на кнопку очистки
+  clearBtn.addEventListener('click', () => {
+    valueInput.value = '';
+    clearBtn.classList.add('d-none');
+    valueInput.focus();
+  });
+
+  // Показываем кнопку очистки, если в поле уже есть данные
+  if (contact.value.trim() !== '') {
+    clearBtn.classList.remove('d-none');
+  }
+
   return contactDiv;
 }
+
 
 // Функция для заполнения формы данными клиента
 function fillForm(client) {
@@ -201,24 +242,19 @@ function fillForm(client) {
   document.getElementById('lastName').value = client.lastName || '';
 
   // Очистка предыдущих контактов
-  const contactsContainer = document.getElementById('contacts-container');
   contactsContainer.innerHTML = '';
-
   // Добавление существующих контактов в форму
   if (client.contacts && client.contacts.length > 0) {
     client.contacts.forEach(contact => {
-      contactsContainer.appendChild(createContactInput(contact));
-    });
 
-    // Проверка на максимальное количество контактов
-    // if (client.contacts.length === 10) {
-    //   console.log('Достигнуто максимальное количество контактов!');
-    // }
+      contactsContainer.appendChild(createContactInput(contact));
+
+    });
   }
 
   // Сохранение начального состояния формы
   initialFormState = getFormState();
-  saveBtn.disabled = true; // Деактивация кнопки сохранения
+  //saveBtn.disabled = true; // Деактивация кнопки сохранения
 }
 
 // Функция для получения текущего состояния формы
@@ -264,11 +300,11 @@ function confirmDeleteClient(clientId) {
         ${getImage('./img/close.svg', 'Закрыть', 'close-img').outerHTML}
         </button>
       </div>
-      <p class="modal-confirm-delete-desc d-">
+      <p class="modal-confirm-delete-desc text">
         Вы действительно хотите удалить данного клиента?
       </p>
       <div class="modal-confirm-btn-wrap d-flex flex-column">
-        <button class="confirm-delete-btn btn-primary btn" id="confirm-delete-btn">Удалить</button>
+        <button class="confirm-delete-btn btn" id="confirm-delete-btn">Удалить</button>
         <button class="confirm-cancel-btn btn-none btn" id="confirm-cancel-btn">Отмена</button>
       </div>`;
   document.getElementById('confirm-delete-btn').addEventListener('click', () => deleteClient(clientId));
@@ -293,6 +329,30 @@ function getSortClients(prop, dir) {
   });
 }
 
+
+
+// Функция обновления иконок сортировки и указателей
+function updateSortIcons() {
+  clientsTableData.forEach(th => {
+    const icon = th.querySelector('.sort-icon');
+    const order = th.querySelector('.sort-order');
+
+    if (th.dataset.column === column) {
+      th.classList.add('sorted');
+      icon.classList.toggle('asc', columnDir);
+      icon.classList.toggle('desc', !columnDir);
+      if (order) {
+        if (th.dataset.column === 'fio') {
+          order.textContent = columnDir ? 'А-Я' : 'Я-А';
+        }
+      }
+    } else {
+      th.classList.remove('sorted');
+    }
+  });
+
+}
+
 // функция фильтрации
 function filter(arr, prop, value) {
   let result = [],
@@ -305,6 +365,17 @@ function filter(arr, prop, value) {
 
 }
 
+// Сортировка списка
+clientsTableData.forEach(elem => {
+  elem.addEventListener('click', function () {
+    if (this.dataset.column) {
+      column = this.dataset.column;
+      columnDir = !columnDir;
+      render();
+    }
+  });
+});
+
 // Функция для отображения списка клиентов в таблице
 function render() {
   clientsTable.innerHTML = '';
@@ -316,10 +387,10 @@ function render() {
     const clientTR = document.createElement('tr');
 
     clientTR.innerHTML = `
-            <td class="client-id" id="client-id">${client.id}</td>
-            <td class="client-fio" id="client-fio">${getFio(client.surname, client.name, client.lastName)}</td>
-            <td class="client-create-time" id="client-create-time">${formatDateTime(client.createdAt)}</td>
-            <td class="client-update-time" id="client-update-time">${formatDateTime(client.updatedAt)}</td>
+            <td class="client-id light-text" id="client-id">${client.id}</td>
+            <td class="client-fio text" id="client-fio">${getFio(client.surname, client.name, client.lastName)}</td>
+            <td class="client-create-time text" id="client-create-time">${formatDateTime(client.createdAt)}</td>
+            <td class="client-update-time text" id="client-update-time">${formatDateTime(client.updatedAt)}</td>
             <td class="client-contacts" id="client-contacts">${getContacts(client.contacts)}</td>
         `;
 
@@ -355,34 +426,26 @@ function render() {
     clientsTable.appendChild(clientTR);
   });
 
+  ;
+
   // tippy('[data-tippy-content]');
   tippy('#tippy-contact', {
     allowHTML: true,
     interactive: true,
   });
-}
-//сортирует список
-clientsTableData.forEach(elem => {
-  elem.addEventListener('click', function () {
-    column = this.dataset.column;
-    columnDir = !columnDir
-    render()
-  })
-})
 
-// Первоначальное отображение списка клиентов
-render();
+  updateSortIcons()
+}
+
+
 
 // Добавление нового поля контакта при нажатии на кнопку "Добавить контакт"
 
-
-
 addContactBtn.addEventListener('click', (event) => {
   event.preventDefault();
-  const contactsContainer = document.getElementById('contacts-container');
   const contactCount = contactsContainer.querySelectorAll('.contact-input').length;
 
-  if (contactCount > 10) {
+  if (contactCount > 9) {
     addContactBtn.classList.add('d-none')
 
   } else {
@@ -440,7 +503,7 @@ addClientForm.addEventListener('submit', async (event) => {
   render();
   formWrap.classList.add('d-none');
   event.target.reset();
-  document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов после сохранения
+  contactsContainer.innerHTML = ''; // Очистка полей контактов после сохранения
 });
 
 // Открытие формы для добавления нового клиента
@@ -448,7 +511,7 @@ addBtn.addEventListener('click', () => {
   formWrap.classList.remove('d-none');
   formTitle.innerHTML = 'Новый клиент';
   addBtn.dataset.editId = '';
-  document.getElementById('contacts-container').innerHTML = ''; // Очистка полей контактов при добавлении нового клиента
+  contactsContainer.innerHTML = ''; // Очистка полей контактов при добавлении нового клиента
   initialFormState = getFormState(); // Установка начального состояния формы
   saveBtn.disabled = true; // Деактивация кнопки сохранения
 
@@ -461,7 +524,7 @@ addBtn.addEventListener('click', () => {
 closeBtn.addEventListener('click', () => {
   formWrap.classList.add('d-none');
   addClientForm.reset();
-  document.getElementById('contacts-container').innerHTML = '';
+  contactsContainer.innerHTML = '';
 });
 
 // Первоначальное отображение списка клиентов

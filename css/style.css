@@ -4,6 +4,7 @@
   --orange: #e6b127;
   --red: #f06a4d;
   --firm: #9873ff;
+  --ligth-grey: rgba(200, 197, 209, .3);
   --grey: #c8c5d1;
   --txt-grey: #b0b0b0;
   --black: #333;
@@ -18,7 +19,25 @@ body {
   background-color: var(--grey);
 }
 
+th {
+  padding-right: 20px;
+  cursor: pointer;
+}
+
+:active,
+:hover,
+:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+
 .text {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--black);
+}
+
+.light-text {
   font-family: var(--font-family);
   font-size: 12px;
   color: var(--txt-grey);
@@ -32,10 +51,46 @@ body {
   max-width: 1024px;
 }
 
+.container-dark-fone {
+  background: rgba(51, 51, 51, 0.6);
+
+}
+
+.contacts {
+  background-color: var(--ligth-grey);
+  padding-left: -30px;
+  padding-right: -30px;
+}
+
+.contacts-container {
+  padding-bottom: 30px;
+}
+
+.contact-input {
+  border: 1px solid var(--grey);
+  border-radius: 0;
+  background-color: var(--white);
+}
+
+.contact-value {
+  outline: none;
+  border: none;
+  background-color: transparent;
+}
 
 .form-wrap {
-  background: var(--white);
+  max-width: 450px;
+  box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.15);
+  background-color: var(--white);
+  padding: 30px;
+
 }
+
+.modal-form-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+
 
 .form-item {
   display: inline-block;
@@ -44,9 +99,11 @@ body {
 }
 
 .form-input {
+  border: none;
+  border-bottom: 1px solid var(--grey);
   width: 100%;
   height: 40px;
-  padding: 5px 15px;
+  padding: 5px 0;
 }
 
 .form-label {
@@ -71,8 +128,8 @@ body {
 }
 
 .form-select {
-  border: 1px solid var(--grey);
-  width: 123px;
+  border: none;
+  max-width: 123px;
   height: 37px;
   background-color: #e7e5eb;
   background-image: url(../img/select-arrow-down.svg);
@@ -103,6 +160,33 @@ body {
   background-color: inherit;
 }
 
+th.sorted {
+  color: var(--firm)
+    /* Цвет для активной колонки */
+}
+
+.sort-icon {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-left: 5px;
+  background-size: contain;
+
+}
+
+.sort-order {
+  display: inline-block;
+  margin-left: 5px;
+}
+
+.sort-icon.asc {
+  background-image: url('../img/arrow-up.svg');
+}
+
+.sort-icon.desc {
+  background-image: url('../img/arrow-dawn.svg');
+}
+
 .table-body {
   height: 300px;
 }
@@ -119,9 +203,20 @@ body {
   background-color: var(--white);
 }
 
-.container-dark-fone {
-  background: rgba(51, 51, 51, 0.6);
+.add-contact-btn {
+  border: none;
+  font-weight: 600;
+  font-size: 14px;
+}
 
+.clear-btn {
+  border: none;
+  background-color: var(--grey);
+
+}
+
+.clear-btn>svg {
+  fill: var(--txt-grey)
 }
 
 .editBtn,

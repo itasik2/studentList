@@ -13,7 +13,7 @@
         <div class="container d-flex flex-column position-relative" id="container">
           <div class="modal-confirm-delete position-absolute bg-white" id="modal-confirm-delete"></div>
           <div class="form-wrap position-absolute d-none" id="form-wrap">
-            <div class="modal-form-wrap d-flex justify-content-between" id="modal-form-wrap">
+            <div class="modal-form-wrap d-flex justify-content-between pr-3 pl-3" id="modal-form-wrap">
               <h3 class="modal-form-title" id="modal-form-title"></h3>
               <button class="close-btn" id="close-btn">
                 <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,36 +21,39 @@
                 </svg>
               </button>
             </div>
-            <form class="form d-flex flex-column modal-form" id="add-client-form" action="submit">
+            <form class="form modal-form d-flex flex-column" id="add-client-form" action="submit">
               <div class="form-item">
-                <input class="form-input" id="surname" type="text" required>
+                <input class="form-input" id="surname" type="light-text" required>
                 <label class="form-label" for="surname">Фамилия*</label>
               </div>
               <div class="form-item">
-                <input class="form-input" id="name" type="text" required>
+                <input class="form-input" id="name" type="light-text" required>
                 <label class="form-label" for="name">Имя*</label>
               </div>
               <div class="form-item">
-                <input class="form-input" id="lastName" type="text" required>
+                <input class="form-input" id="lastName" type="light-text" required>
                 <label class="form-label" for="lastName">Отчество</label>
               </div>
 
-              <div id="contacts-container"></div>
 
-              <button class="add-contact" id="add-contact-btn" type="button">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_224_3502)">
-                    <path d="M7.99998 4.66671C7.63331 4.66671 7.33331 4.96671 7.33331 5.33337V7.33337H5.33331C4.96665 7.33337 4.66665 7.63337 4.66665 8.00004C4.66665 8.36671 4.96665 8.66671 5.33331 8.66671H7.33331V10.6667C7.33331 11.0334 7.63331 11.3334 7.99998 11.3334C8.36665 11.3334 8.66665 11.0334 8.66665 10.6667V8.66671H10.6666C11.0333 8.66671 11.3333 8.36671 11.3333 8.00004C11.3333 7.63337 11.0333 7.33337 10.6666 7.33337H8.66665V5.33337C8.66665 4.96671 8.36665 4.66671 7.99998 4.66671ZM7.99998 1.33337C4.31998 1.33337 1.33331 4.32004 1.33331 8.00004C1.33331 11.68 4.31998 14.6667 7.99998 14.6667C11.68 14.6667 14.6666 11.68 14.6666 8.00004C14.6666 4.32004 11.68 1.33337 7.99998 1.33337ZM7.99998 13.3334C5.05998 13.3334 2.66665 10.94 2.66665 8.00004C2.66665 5.06004 5.05998 2.66671 7.99998 2.66671C10.94 2.66671 13.3333 5.06004 13.3333 8.00004C13.3333 10.94 10.94 13.3334 7.99998 13.3334Z" fill="#9873FF"></path>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_224_3502">
-                      <rect width="16" height="16" fill="white"></rect>
-                    </clipPath>
-                  </defs>
-                </svg>
-                Добавить контакт
-              </button>
-              <button class="save-client btn-primary" id="save-client-btn">
+              <div class="contacts d-flex flex-column" id="contacts">
+                <div class="contacts-container" id="contacts-container"></div>
+                <button class="add-contact-btn" id="add-contact-btn" type="button">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_224_3502)">
+                      <path d="M7.99998 4.66671C7.63331 4.66671 7.33331 4.96671 7.33331 5.33337V7.33337H5.33331C4.96665 7.33337 4.66665 7.63337 4.66665 8.00004C4.66665 8.36671 4.96665 8.66671 5.33331 8.66671H7.33331V10.6667C7.33331 11.0334 7.63331 11.3334 7.99998 11.3334C8.36665 11.3334 8.66665 11.0334 8.66665 10.6667V8.66671H10.6666C11.0333 8.66671 11.3333 8.36671 11.3333 8.00004C11.3333 7.63337 11.0333 7.33337 10.6666 7.33337H8.66665V5.33337C8.66665 4.96671 8.36665 4.66671 7.99998 4.66671ZM7.99998 1.33337C4.31998 1.33337 1.33331 4.32004 1.33331 8.00004C1.33331 11.68 4.31998 14.6667 7.99998 14.6667C11.68 14.6667 14.6666 11.68 14.6666 8.00004C14.6666 4.32004 11.68 1.33337 7.99998 1.33337ZM7.99998 13.3334C5.05998 13.3334 2.66665 10.94 2.66665 8.00004C2.66665 5.06004 5.05998 2.66671 7.99998 2.66671C10.94 2.66671 13.3333 5.06004 13.3333 8.00004C13.3333 10.94 10.94 13.3334 7.99998 13.3334Z" fill="#9873FF"></path>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_224_3502">
+                        <rect width="16" height="16" fill="white"></rect>
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  Добавить контакт
+                </button>
+              </div>
+
+              <button class="save-client-btn btn-primary" id="save-client-btn">
                 Сохранить
               </button>
             </form>
@@ -62,22 +65,27 @@
               <input class="form-search__input h-100 p-2" id="search" type="search" name="search" placeholder="Введите запрос">
             </form>
           </div>
-          <div class="table-wrap">
+          <div class="table-wrap" id="table wrap">
             <h1 class="h1-title">Контакты</h1>
-            <table class="table table-borderless">
-              <thead>
-                <th class="text" id="id" data-column="id">ID</th>
-                <th class="text" id="fio" data-column="fio">
+            <table class="table table-borderless" id="table">
+              <thead class="table-head" id="table-head">
+                <th class="light-text" id="id" data-column="id">ID
+                  <span class="sort-icon asc"></span>
+                </th>
+                <th class="light-text" id="fio" data-column="fio">
                   Фамилия Имя Отчество
+                  <span class="sort-icon asc"></span><span class="sort-order"></span>
                 </th>
-                <th class="text" id="createdAt" data-column="createdAt">
+                <th class="light-text" id="createdAt" data-column="createdAt">
                   Дата и время<br>создания
+                  <span class="sort-icon asc"></span>
                 </th>
-                <th class="text" id="updatedAt" data-column="updatedAt">
+                <th class="light-text" id="updatedAt" data-column="updatedAt">
                   Последние<br>изменения
+                  <span class="sort-icon asc"></span>
                 </th>
-                <th class="text">Контакты</th>
-                <th class="text">Действия</th>
+                <th class="light-text">Контакты</th>
+                <th class="light-text">Действия</th>
               </thead>
               <tbody class="table-body mb-3" id="clients-table"></tbody>
             </table>
