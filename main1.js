@@ -1,6 +1,6 @@
 // Получение элементов из DOM
 const clientsTable = document.getElementById('clients-table'),
-  modalWrap = document.getElementById('modal-container'),
+  modalContainer = document.getElementById('modal-container'),
   addClientForm = document.getElementById('add-client-form'),
   addBtn = document.getElementById('add-btn'),
   saveBtn = document.getElementById('save-client-btn'),
@@ -13,6 +13,21 @@ const clientsTable = document.getElementById('clients-table'),
   contactsContainer = document.getElementById('contacts-container')
 
 let initialFormState = {};
+
+modalContainer.innerHTML = `
+<div class="modal-wrap position-relative" id="modal-wrap">
+            <div class="modal-header d-flex justify-content-between pr-3 pl-3" id="modal-header">
+              <h3 class="modal-title" id="modal-title"></h3>
+              <button class="close-btn mr-auto" id="modal-close-btn">
+        ${getImage('./img/close.svg', 'Закрыть', 'close-img').outerHTML}
+        </button>
+            </div>
+            <div class="modal-confirm-delete bg-white" id="modal-confirm-delete"></div>
+
+
+            <div class="button-container d-flex justify-content-center" id="button-container"></div>
+          </div>
+`
 
 const serverClientsUrl = 'http://localhost:3000/api/clients/';
 
@@ -68,7 +83,7 @@ function getBtn(innerHTML, className, id) {
 // кнопка "Отмена"
 const cancelBtn = getBtn('Отмена', 'cancelBtn', 'cancelBtn');
 cancelBtn.addEventListener('click', () => {
-  modalWrap.classList.add('d-none');
+  modalContainer.classList.add('d-none');
   addClientForm.reset();
   contactsContainer.innerHTML = ''; // Очистка полей контактов
 });
@@ -399,7 +414,7 @@ function render() {
     const editBtn = getBtn(`${getImage('./img/edit.svg', 'Изменить', 'edit-img').outerHTML} Изменить`, 'editBtn', `edit-${client.id}`);
     editBtn.addEventListener('click', () => {
       fillForm(client);
-      modalWrap.classList.remove('d-none');
+      modalContainer.classList.remove('d-none');
       modalTitle.innerHTML = `Изменить данные <span class="span-id light-text"> ID: ${client.id}</span>`;
       addBtn.dataset.editId = client.id;
 
@@ -408,7 +423,7 @@ function render() {
       const deleteClientBtn = getBtn('Удалить клиента', 'delete-client-btn', `delete-client-${client.id}`);
       deleteClientBtn.addEventListener('click', () => {
         confirmDeleteClient(client.id);
-        modalWrap.classList.add('d-none');
+        modalContainer.classList.add('d-none');
       });
 
       buttonContainer.appendChild(deleteClientBtn);
@@ -502,14 +517,14 @@ addClientForm.addEventListener('submit', async (event) => {
     clientsArr.push(clientDataObj);
   }
   render();
-  modalWrap.classList.add('d-none');
+  modalContainer.classList.add('d-none');
   event.target.reset();
   contactsContainer.innerHTML = ''; // Очистка полей контактов после сохранения
 });
 
 // Открытие формы для добавления нового клиента
 addBtn.addEventListener('click', () => {
-  modalWrap.classList.remove('d-none');
+  modalContainer.classList.remove('d-none');
   modalTitle.innerHTML = 'Новый клиент';
   addBtn.dataset.editId = '';
   contactsContainer.innerHTML = ''; // Очистка полей контактов при добавлении нового клиента
@@ -523,7 +538,7 @@ addBtn.addEventListener('click', () => {
 
 // Добавление обработчика на кнопку закрытия формы
 closeBtn.addEventListener('click', () => {
-  modalWrap.classList.add('d-none');
+  modalContainer.classList.add('d-none');
   addClientForm.reset();
   contactsContainer.innerHTML = '';
 });

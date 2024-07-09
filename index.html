@@ -10,17 +10,19 @@
         <link href="./css/style.css" rel="stylesheet">
       </head>
       <body>
-        <div class="container d-flex flex-column position-relative" id="container">
-          <div class="modal-confirm-delete position-absolute bg-white" id="modal-confirm-delete"></div>
-          <div class="form-wrap position-absolute d-none" id="form-wrap">
-            <div class="modal-form-wrap d-flex justify-content-between pr-3 pl-3" id="modal-form-wrap">
-              <h3 class="modal-form-title" id="modal-form-title"></h3>
+<div class="container d-flex flex-column position-relative" id="container">
+        <div class="modal-container position-absolute d-flex justify-content-center align-items-center d-none" id="modal-container">
+          <div class="modal-wrap position-relative" id="modal-wrap">
+            <div class="modal-header d-flex justify-content-between pr-3 pl-3" id="modal-header">
+              <h3 class="modal-title" id="modal-title"></h3>
               <button class="close-btn" id="close-btn">
                 <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path fill-rule="evenodd" clip-rule="evenodd" d="M22.2332 7.73333L21.2665 6.76666L14.4998 13.5334L7.73318 6.7667L6.76652 7.73336L13.5332 14.5L6.76654 21.2667L7.73321 22.2333L14.4998 15.4667L21.2665 22.2334L22.2332 21.2667L15.4665 14.5L22.2332 7.73333Z" fill="#B0B0B0"></path>
                 </svg>
               </button>
             </div>
+            <div class="modal-confirm-delete bg-white" id="modal-confirm-delete"></div>
+
             <form class="form modal-form d-flex flex-column" id="add-client-form" action="submit">
               <div class="form-item">
                 <input class="form-input" id="surname" type="light-text" required>
@@ -34,10 +36,9 @@
                 <input class="form-input" id="lastName" type="light-text" required>
                 <label class="form-label" for="lastName">Отчество</label>
               </div>
-
-
               <div class="contacts d-flex flex-column" id="contacts">
                 <div class="contacts-container" id="contacts-container"></div>
+
                 <button class="add-contact-btn" id="add-contact-btn" type="button">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_224_3502)">
@@ -57,8 +58,12 @@
                 Сохранить
               </button>
             </form>
+
             <div class="button-container d-flex justify-content-center" id="button-container"></div>
           </div>
+        </div>
+
+
           <div class="header d-flex mb-4">
             <img class="logo" src="./img/header-logo.svg" alt="логотип">
             <form class="form-search d-flex align-items-center" action="submit">
@@ -97,10 +102,13 @@
             </div>
           </div>
         </div>
+
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="https://unpkg.com/tippy.js@6"></script>
         <script src="./main.js" defer type="module"></script>
-      </body>
+
+
+    </body>
     </html>
 
 

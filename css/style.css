@@ -51,10 +51,7 @@ th {
   max-width: 1024px;
 }
 
-.container-dark-fone {
-  background: rgba(51, 51, 51, 0.6);
 
-}
 
 .contacts {
   background-color: var(--ligth-grey);
@@ -78,15 +75,24 @@ th {
   background-color: transparent;
 }
 
-.form-wrap {
-  max-width: 450px;
-  box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.15);
-  background-color: var(--white);
-  padding: 30px;
-
+.modal-container {
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(51, 51, 51, 0.6);
+  z-index: 99999;
 }
 
-.modal-form-title {
+.modal-wrap {
+  max-width: 450px;
+  box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.15);
+  background: var(--white);
+  padding: 30px;
+  z-index: 99999;
+  height: max-content;
+}
+
+.modal-title {
   font-weight: 700;
   font-size: 18px;
 }
@@ -129,6 +135,7 @@ th {
 
 .form-select {
   border: none;
+  border-radius: 0;
   max-width: 123px;
   height: 37px;
   background-color: #e7e5eb;
